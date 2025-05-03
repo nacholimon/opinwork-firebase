@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { ThemeProvider } from './contexts/ThemeContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -45,21 +44,19 @@ function App() {
     <Router>
       <AuthProvider>
         <LanguageProvider>
-          <ThemeProvider>
-            <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
-              <Navbar />
-              <div className="container mx-auto px-4 py-8">
-                <Routes>
-                  <Route path="/" element={<SplashOrRedirect />} />
-                  <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-                  <Route path="/admin-dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                  <Route path="/first-admin" element={<FirstAdmin />} />
-                  <Route path="/home" element={<Home />} />
-                  <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-                </Routes>
-              </div>
+          <div className="min-h-screen bg-gray-900">
+            <Navbar />
+            <div className="container mx-auto px-4 py-8">
+              <Routes>
+                <Route path="/" element={<SplashOrRedirect />} />
+                <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+                <Route path="/admin-dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                <Route path="/first-admin" element={<FirstAdmin />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+              </Routes>
             </div>
-          </ThemeProvider>
+          </div>
         </LanguageProvider>
       </AuthProvider>
     </Router>
