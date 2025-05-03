@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import FirstAdmin from './pages/FirstAdmin';
 import AdminDashboard from './pages/AdminDashboard';
+import Profile from './pages/Profile';
 import { useEffect, useState } from 'react';
 import { db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/first-admin" element={<FirstAdmin />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/profile" element={<Profile />} />
               </Routes>
             </div>
           </div>

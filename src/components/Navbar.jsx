@@ -5,12 +5,14 @@ import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 
 export default function Navbar() {
   const { currentUser } = useAuth();
   const { t } = useLanguage();
   const [hasUsers, setHasUsers] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const checkUsers = async () => {
@@ -20,12 +22,33 @@ export default function Navbar() {
     checkUsers();
   }, []);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (currentUser) {
+        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        }
+      }
+    };
+    fetchUserData();
+  }, [currentUser]);
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
     } catch (error) {
       console.error('Error signing out:', error);
     }
+  };
+
+  const getInitials = (name) => {
+    if (!name) return 'U';
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase();
   };
 
   return (
@@ -39,12 +62,6 @@ export default function Navbar() {
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                to="/"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                {t('home')}
-              </Link>
               {currentUser && (
                 <Link
                   to="/dashboard"
@@ -57,12 +74,45 @@ export default function Navbar() {
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {currentUser ? (
-              <button
-                onClick={handleLogout}
-                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                {t('signOut')}
-              </button>
+              <div className="ml-3 relative">
+                <div>
+                  <button
+                    type="button"
+                    className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    <span className="sr-only">Abrir menú de usuario</span>
+                    {currentUser.photoURL ? (
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src={currentUser.photoURL}
+                        alt=""
+                      />
+                    ) : (
+                      <div className="h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-sm font-bold">
+                        {getInitials(userData?.name || currentUser.displayName)}
+                      </div>
+                    )}
+                  </button>
+                </div>
+                {isDropdownOpen && (
+                  <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      {t('profile')}
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      {t('signOut')}
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : hasUsers ? (
               <Link
                 to="/login"
