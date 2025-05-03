@@ -46,7 +46,7 @@ function App() {
       <AuthProvider>
         <LanguageProvider>
           <ThemeProvider>
-            <div className="min-h-screen bg-white dark:bg-gray-900">
+            <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
               <Navbar />
               <div className="container mx-auto px-4 py-8">
                 <Routes>

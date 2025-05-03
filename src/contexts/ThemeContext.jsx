@@ -26,11 +26,7 @@ export function ThemeProvider({ children }) {
   }, [isDarkMode]);
 
   const toggleTheme = () => {
-    setIsDarkMode(prev => {
-      const newMode = !prev;
-      console.log('Toggling theme to:', newMode ? 'dark' : 'light');
-      return newMode;
-    });
+    setIsDarkMode(prev => !prev);
   };
 
   return (
