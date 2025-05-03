@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -9,11 +10,21 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const handleRedirect = async (user) => {
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    const role = userDoc.exists() ? userDoc.data().role : 'user';
+    if (role === 'admin') {
+      navigate('/admin-dashboard');
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard');
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await handleRedirect(userCredential.user);
     } catch (error) {
       setError(error.message);
     }
@@ -23,8 +34,8 @@ export default function Login() {
     setError('');
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      navigate('/dashboard');
+      const result = await signInWithPopup(auth, provider);
+      await handleRedirect(result.user);
     } catch (error) {
       setError(error.message);
     }
