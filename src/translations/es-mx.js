@@ -20,6 +20,12 @@ export const esMX = {
     editProfile: 'Editar Perfil',
     photoUpdated: 'Foto de perfil actualizada correctamente',
     photoUpdateError: 'Error al actualizar la foto de perfil',
+    theme: 'Tema',
+    darkMode: 'Modo Oscuro',
+    lightMode: 'Modo Claro',
+    systemTheme: 'Usar tema del sistema',
+    themeUpdated: 'Tema actualizado correctamente',
+    themeUpdateError: 'Error al actualizar el tema',
 
     // Home
     welcome: 'Bienvenido a Mi Aplicación',

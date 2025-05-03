@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { Navigate } from 'react-router-dom';
 import { db, storage } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -9,6 +10,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 export default function Profile() {
   const { currentUser } = useAuth();
   const { t } = useLanguage();
+  const { isDarkMode, toggleTheme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({
     name: '',
@@ -100,9 +102,9 @@ export default function Profile() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="py-8">
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
-            <h2 className="text-2xl font-bold text-gray-900">{t('profile')}</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('profile')}</h2>
           </div>
           
           {error && (
@@ -117,7 +119,7 @@ export default function Profile() {
             </div>
           )}
 
-          <div className="border-t border-gray-200">
+          <div className="border-t border-gray-200 dark:border-gray-700">
             <div className="px-4 py-5 sm:px-6">
               <div className="flex items-center space-x-4">
                 <div className="relative">
@@ -147,17 +149,17 @@ export default function Profile() {
                   </label>
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">{userData.name || t('user')}</h3>
-                  <p className="text-sm text-gray-500">{currentUser.email}</p>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">{userData.name || t('user')}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{currentUser.email}</p>
                 </div>
               </div>
             </div>
 
-            <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+            <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-5 sm:px-6">
               {isEditing ? (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                       {t('name')}
                     </label>
                     <input
@@ -165,12 +167,12 @@ export default function Profile() {
                       id="name"
                       value={userData.name}
                       onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                       {t('phone')} ({t('optional')})
                     </label>
                     <input
@@ -178,7 +180,7 @@ export default function Profile() {
                       id="phone"
                       value={userData.phone}
                       onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
 
@@ -186,7 +188,7 @@ export default function Profile() {
                     <button
                       type="button"
                       onClick={() => setIsEditing(false)}
-                      className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 dark:text-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       {t('cancel')}
                     </button>
@@ -201,16 +203,45 @@ export default function Profile() {
               ) : (
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500">{t('name')}</h4>
-                    <p className="mt-1 text-sm text-gray-900">{userData.name || t('notSet')}</p>
+                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('name')}</h4>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">{userData.name || t('notSet')}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500">{t('phone')}</h4>
-                    <p className="mt-1 text-sm text-gray-900">{userData.phone || t('notSet')}</p>
+                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('phone')}</h4>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">{userData.phone || t('notSet')}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500">{t('email')}</h4>
-                    <p className="mt-1 text-sm text-gray-900">{currentUser.email}</p>
+                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('email')}</h4>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">{currentUser.email}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('theme')}</h4>
+                    <div className="mt-2 flex items-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          console.log('Current theme:', isDarkMode ? 'dark' : 'light');
+                          toggleTheme();
+                        }}
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        {isDarkMode ? (
+                          <>
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            {t('lightMode')}
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                            {t('darkMode')}
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <div className="flex justify-end">
                     <button
