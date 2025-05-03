@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -38,20 +39,22 @@ function SplashOrRedirect() {
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <div className="min-h-screen bg-gray-100">
-          <Navbar />
-          <div className="container mx-auto px-4 py-8">
-            <Routes>
-              <Route path="/" element={<SplashOrRedirect />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              <Route path="/first-admin" element={<FirstAdmin />} />
-              <Route path="/home" element={<Home />} />
-            </Routes>
+      <LanguageProvider>
+        <AuthProvider>
+          <div className="min-h-screen bg-gray-100">
+            <Navbar />
+            <div className="container mx-auto px-4 py-8">
+              <Routes>
+                <Route path="/" element={<SplashOrRedirect />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/first-admin" element={<FirstAdmin />} />
+                <Route path="/home" element={<Home />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </AuthProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </Router>
   );
 }
