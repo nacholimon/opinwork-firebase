@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import FirstAdmin from './pages/FirstAdmin';
 import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
+import AdminUsers from './pages/AdminUsers';
+import Register from './pages/Register';
 import { useEffect, useState } from 'react';
 import { db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -33,7 +35,7 @@ function SplashOrRedirect() {
     checkRole();
   }, [currentUser]);
 
-  if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  if (loading) return <div className="flex justify-center items-center h-screen bg-gray-900 text-white">Loading...</div>;
   if (!currentUser) return <Login />;
   if (role === 'admin') return <Navigate to="/admin-dashboard" />;
   return <Navigate to="/dashboard" />;
@@ -44,18 +46,20 @@ function App() {
     <Router>
       <AuthProvider>
         <LanguageProvider>
-          <div className="min-h-screen bg-gray-900">
+          <div className="min-h-screen bg-gray-900 text-white">
             <Navbar />
-            <div className="container mx-auto px-4 py-8">
+            <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
               <Routes>
                 <Route path="/" element={<SplashOrRedirect />} />
                 <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
                 <Route path="/admin-dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                <Route path="/admin-users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
                 <Route path="/first-admin" element={<FirstAdmin />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+                <Route path="/register" element={<Register />} />
               </Routes>
-            </div>
+            </main>
           </div>
         </LanguageProvider>
       </AuthProvider>

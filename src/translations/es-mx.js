@@ -35,6 +35,7 @@ export const esMX = {
     // Navbar
     home: 'Inicio',
     dashboard: 'Panel de control',
+    adminUsers: 'Administrar Usuarios',
 
     // Login
     signInToAccount: 'Inicia sesión en tu cuenta',
@@ -52,4 +53,24 @@ export const esMX = {
     // AdminDashboard
     adminDashboard: 'Panel de administración',
     adminWelcome: '¡Bienvenido, administrador! Aquí puedes gestionar usuarios y realizar tareas administrativas.',
+
+    // AdminUsers
+    users: 'Usuarios',
+    invitations: 'Invitaciones',
+    role: 'Rol',
+    actions: 'Acciones',
+    deactivate: 'Desactivar',
+    activate: 'Activar',
+    expirationDays: 'Días de expiración',
+    day: 'día',
+    days: 'días',
+    generateInvitation: 'Generar Invitación',
+    invitationLink: 'Link de Invitación',
+    createdAt: 'Creado el',
+    expiresAt: 'Expira el',
+    status: 'Estado',
+    used: 'Usado',
+    expired: 'Expirado',
+    active: 'Activo',
+    copy: 'Copiar',
 }; 

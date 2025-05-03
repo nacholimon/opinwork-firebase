@@ -24,6 +24,12 @@ service cloud.firestore {
       allow update, delete: if isAdmin() || isOwner(userId);
     }
 
+    // Invitations collection (lectura pública, escritura solo admin)
+    match /invitations/{invitationId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Default deny
     match /{document=**} {
       allow read, write: if false;
