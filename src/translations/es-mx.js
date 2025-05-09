@@ -12,6 +12,7 @@ export const esMX = {
     name: 'Nombre',
     phone: 'Teléfono',
     profile: 'Mi Perfil',
+    manageYourProfile: 'Gestiona tu información personal',
     updateProfile: 'Actualizar Perfil',
     profileUpdated: 'Perfil actualizado correctamente',
     profileUpdateError: 'Error al actualizar el perfil',
@@ -26,6 +27,7 @@ export const esMX = {
     systemTheme: 'Usar tema del sistema',
     themeUpdated: 'Tema actualizado correctamente',
     themeUpdateError: 'Error al actualizar el tema',
+    lastLogin: 'Último acceso',
 
     // Home
     welcome: 'Bienvenido a Mi Aplicación',

@@ -72,37 +72,52 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center space-x-2 text-gray-300 hover:text-white"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 border-2 border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  <span>{userData?.name || currentUser.email}</span>
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+                  {userData?.photoURL || currentUser.photoURL ? (
+                    <img
+                      src={userData?.photoURL || currentUser.photoURL}
+                      alt="avatar"
+                      className="w-9 h-9 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-white font-bold text-lg">
+                      {userData?.name
+                        ? userData.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2)
+                        : currentUser.email[0].toUpperCase()}
+                    </span>
+                  )}
                 </button>
                 {isDropdownOpen && (
-                  <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      {t('profile')}
-                    </Link>
-                    {userData?.role === 'admin' && (
+                  <div className="origin-top-right absolute right-0 mt-2 w-64 rounded-xl shadow-2xl py-2 bg-gray-900 ring-1 ring-black ring-opacity-10 focus:outline-none z-50 border border-gray-700">
+                    <div className="px-4 py-2 border-b border-gray-800">
+                      <span className="text-white font-semibold text-base truncate max-w-[160px] block">{userData?.name || currentUser.email}</span>
+                      <span className={`mt-1 inline-block px-2 py-0.5 text-xs font-semibold rounded ${userData?.role === 'admin' ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-300'}`}>{userData?.role === 'admin' ? 'Admin' : 'Usuario'}</span>
+                    </div>
+                    <div className="py-1">
                       <Link
-                        to="/admin-users"
-                        className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                        to="/profile"
+                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 hover:text-white rounded transition-colors"
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        {t('adminUsers')}
+                        {t('profile')}
                       </Link>
-                    )}
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                    >
-                      {t('logout')}
-                    </button>
+                      {userData?.role === 'admin' && (
+                        <Link
+                          to="/admin-users"
+                          className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 hover:text-white rounded transition-colors"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          {t('adminUsers')}
+                        </Link>
+                      )}
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-800 hover:text-red-300 rounded transition-colors"
+                      >
+                        {t('signOut')}
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
