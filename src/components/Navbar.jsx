@@ -45,16 +45,6 @@ export default function Navbar() {
                 OpinWork
               </Link>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              {currentUser && (
-                <Link
-                  to="/dashboard"
-                  className="border-transparent text-gray-300 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                >
-                  {t('dashboard')}
-                </Link>
-              )}
-            </div>
           </div>
           
           {/* Mobile menu button */}
@@ -132,15 +122,6 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="sm:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            {currentUser && (
-              <Link
-                to="/dashboard"
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {t('dashboard')}
-              </Link>
-            )}
             {currentUser && (
               <Link
                 to="/profile"
