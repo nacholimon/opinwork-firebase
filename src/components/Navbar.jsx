@@ -41,8 +41,8 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="text-xl font-bold text-white">
-                OpinWork
+              <Link to="/" className="text-2xl font-extrabold tracking-tight text-white">
+                OPINwork
               </Link>
             </div>
           </div>
@@ -68,7 +68,7 @@ export default function Navbar() {
 
           {/* Desktop menu */}
           <div className="hidden sm:flex sm:items-center">
-            {currentUser ? (
+            {currentUser && (
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -106,13 +106,6 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-            ) : (
-              <Link
-                to="/login"
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-              >
-                {t('login')}
-              </Link>
             )}
           </div>
         </div>
@@ -140,7 +133,7 @@ export default function Navbar() {
                 {t('adminUsers')}
               </Link>
             )}
-            {currentUser ? (
+            {currentUser && (
               <button
                 onClick={() => {
                   handleLogout();
@@ -150,14 +143,6 @@ export default function Navbar() {
               >
                 {t('logout')}
               </button>
-            ) : (
-              <Link
-                to="/login"
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {t('login')}
-              </Link>
             )}
           </div>
         </div>

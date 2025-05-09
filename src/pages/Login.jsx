@@ -11,13 +11,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleRedirect = async (user) => {
-    const userDoc = await getDoc(doc(db, 'users', user.uid));
-    const role = userDoc.exists() ? userDoc.data().role : 'user';
-    if (role === 'admin') {
-      navigate('/admin-dashboard');
-    } else {
-      navigate('/dashboard');
-    }
+    navigate('/dashboard');
   };
 
   const handleSubmit = async (e) => {
