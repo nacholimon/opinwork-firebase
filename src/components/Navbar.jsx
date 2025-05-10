@@ -27,6 +27,10 @@ export default function Navbar() {
     fetchUserData();
   }, [currentUser]);
 
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [currentUser]);
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -88,7 +92,8 @@ export default function Navbar() {
                     </span>
                   )}
                 </button>
-                {isDropdownOpen && (
+                
+                {isDropdownOpen ? (
                   <div className="origin-top-right absolute right-0 mt-2 w-64 rounded-xl shadow-2xl py-2 bg-gray-900 ring-1 ring-black ring-opacity-10 focus:outline-none z-50 border border-gray-700">
                     <div className="px-4 py-2 border-b border-gray-800">
                       <span className="text-white font-semibold text-base truncate max-w-[160px] block">{userData?.name || currentUser.email}</span>
@@ -119,7 +124,7 @@ export default function Navbar() {
                       </button>
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
             )}
           </div>
